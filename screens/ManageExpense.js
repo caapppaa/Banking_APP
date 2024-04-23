@@ -1,16 +1,17 @@
 import { useLayoutEffect, useContext } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TextInput } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import Button from "../components/UI/Button";
 import { ExpensesContext } from "../store/expenses-context";
 import ExpensesSummary from "../components/ExpensesOutput/ExpensesSummary";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 function ManageExpense({ route, navigation }) {
-    const expensesCtx = useContext(ExpensesContext);
+  const expensesCtx = useContext(ExpensesContext);
 
-    const editedExpenseId = route.params?.expenseId;
-    const isEditing = !!editedExpenseId;
+  const editedExpenseId = route.params?.expenseId;
+  const isEditing = !!editedExpenseId;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,15 +28,23 @@ function ManageExpense({ route, navigation }) {
   }
   function confirmHandler() {
     if (isEditing) {
-      expensesCtx.updateExpense(
-        editedExpenseId, {description: 'TestUpdate', amount: 23.99, date: new Date('2024-05-19')});
+      expensesCtx.updateExpense(editedExpenseId, {
+        description: "TestUpdate",
+        amount: 23.99,
+        date: new Date("2024-05-19"),
+      });
     } else {
-      expensesCtx.addExpense({description: 'Test', amount: 19.99, date: new Date('2022-05-19')});
+      expensesCtx.addExpense({
+        description: "Test",
+        amount: 19.99,
+        date: new Date("2022-05-19"),
+      });
     }
     navigation.goBack();
   }
   return (
     <View style={styles.container}>
+      <ExpenseForm />
       <View style={styles.buttons}>
         <Button mode="flat" onPress={cancelHandler} style={styles.buttonStyle}>
           Cancel
@@ -44,17 +53,16 @@ function ManageExpense({ route, navigation }) {
           {isEditing ? "Update" : "Add"}
         </Button>
       </View>
-
-      <View style={styles.deleteContainer}>
-        {isEditing && (
+      {isEditing && (
+        <View style={styles.deleteContainer}>
           <IconButton
             icon="trash"
             color={GlobalStyles.colors.error500}
             size={36}
             onPress={deleteExpenseHandler}
           />
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 }

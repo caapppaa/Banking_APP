@@ -23,7 +23,7 @@ const DUMMY_EXPENSES = [
     id: "e4",
     description: "Guitar Pickups",
     amount: 160,
-    date: new Date("2024-04-21"),
+    date: new Date("2024-04-02"),
   },
   {
     id: "e5",
